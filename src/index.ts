@@ -7,7 +7,7 @@ dotenv.config();
 
 const WAIT_TIME = 4000;
 const MENU_SELECTOR = "#name1337";
-const MY_botS_SELECTOR = "[href='/my']";
+const MY_BOTS_SELECTOR = "[href='/my']";
 
 puppeteer
   .use(StealthPlugin())
@@ -21,7 +21,7 @@ puppeteer
     await login(sdcPage);
 
     await sdcPage.click(MENU_SELECTOR);
-    const mybotsButton = await sdcPage.$(MY_botS_SELECTOR);
+    const mybotsButton = await sdcPage.$(MY_BOTS_SELECTOR);
     await mybotsButton.click();
     await sdcPage.waitFor(WAIT_TIME);
     if (!sdcPage.url().endsWith("/my")) {
