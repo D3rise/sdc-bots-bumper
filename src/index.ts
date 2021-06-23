@@ -20,6 +20,9 @@ puppeteer
     await sdcPage.waitFor(WAIT_TIME);
     await login(sdcPage);
 
+    console.log(await sdcPage.url())
+    await sdcPage.screenshot()
+
     await sdcPage.click(MENU_SELECTOR);
     const mybotsButton = await sdcPage.$(MY_BOTS_SELECTOR);
     await mybotsButton.click();
@@ -44,7 +47,7 @@ async function login(page: Page) {
   } else {
     await loginButton.click();
     await page.waitFor(WAIT_TIME);
-    const authorizeButtonSelector = "[class*='lookFilled'][type='button']";
+    const authorizeButtonSelector = "[class*='lookFilled']";
     let authorizeButton = await page.$(authorizeButtonSelector);
 
     // if not logged in
@@ -52,9 +55,9 @@ async function login(page: Page) {
       console.log("[LOAD] Not logged in to Discord, trying to log in...");
       await page.waitFor(4000); // for low-end systems
 
-      const emailField = await page.$("[type='email']");
-      const passwordField = await page.$("[type='password']");
-      const submitButton = await page.$("[type='submit']");
+      const emailField = await page.$("[name='email']");
+      const passwordField = await page.$("[name='password']");
+      const submitButton = await page.$("button[type='submit']");
 
       await emailField.type(process.env.DISCORD_EMAIL);
       await passwordField.type(process.env.DISCORD_PASSWORD);
@@ -66,10 +69,10 @@ async function login(page: Page) {
         "[LOAD] Already logged in to Discord, trying to click the 'Authorize' button..."
       );
     }
-
+    
     authorizeButton = await page.$(authorizeButtonSelector);
     await authorizeButton.click();
-    await page.waitFor(WAIT_TIME);
+    await page.waitFor(WAIT_TIME + 5000);
 
     console.log("[LOAD] Logged in!");
     return true;
